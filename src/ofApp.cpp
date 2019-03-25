@@ -7,7 +7,7 @@ void ofApp::setup(){
 	ofDisableArbTex();
 	vidGrabber.setup(640, 480, true);
 
-	plane.set(ofGetWidth(),ofGetHeight());
+	plane.set(ofGetWidth()*1.5,ofGetHeight()*1.5);
 	plane.setResolution(16, 9);
 	plane.resizeToTexture(vidGrabber.getTexture(), .5);
 
