@@ -22,7 +22,11 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		ofVideoGrabber vidGrabber;
+		ofVideoGrabber vidGrabber2;
+
 		ofPlanePrimitive plane;
+
+		ofPlanePrimitive plane2;
 		ofVboMesh deformPlane;
 		ofCamera cam;
 

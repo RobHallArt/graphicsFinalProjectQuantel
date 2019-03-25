@@ -5,11 +5,22 @@ void ofApp::setup(){
 
 	ofSetVerticalSync(true);
 	ofDisableArbTex();
+	vidGrabber2.listDevices();
+	vidGrabber.setDeviceID(0);
 	vidGrabber.setup(640, 480, true);
+	vidGrabber2.setDeviceID(1);
+	vidGrabber2.setup(640, 480, true);
+	
 
 	plane.set(ofGetWidth(),ofGetHeight());
 	plane.setResolution(20, 20);
 	plane.resizeToTexture(vidGrabber.getTexture(), .5);
+	plane.setMode(OF_PRIMITIVE_TRIANGLES);
+	
+	plane2.set(ofGetWidth(), ofGetHeight());
+	plane2.setResolution(20, 20);
+	plane2.resizeToTexture(vidGrabber2.getTexture(), .5);
+	plane2.setMode(OF_PRIMITIVE_TRIANGLES);
 
 	ofSetSmoothLighting(true);
 	pointLight.setDiffuseColor(ofFloatColor(1, 1, 1));
@@ -47,6 +58,7 @@ void ofApp::update(){
 	pointLight3.setPosition(0, 0, 0);
 
 	vidGrabber.update();
+	vidGrabber2.update();
 }
 
 //--------------------------------------------------------------
@@ -61,6 +73,14 @@ void ofApp::draw(){
 	pointLight2.enable();
 	pointLight3.enable();
 
+	vidGrabber2.getTexture().bind();
+	ofPushMatrix();
+	ofTranslate(0, 0, -10);
+	ofScale(3);
+	plane2.draw();
+	ofPopMatrix();
+	vidGrabber2.getTexture().unbind();
+
 	vidGrabber.getTexture().bind();
 
 	deformPlane = plane.getMesh();
@@ -70,33 +90,43 @@ void ofApp::draw(){
 	float planeAngleInc = 10.f / (float)planeDims.x;
 	int PDX = planeDims.x;
 	ofVec3f vert;
-
-	for (size_t i = 0; i < deformPlane.getNumIndices(); i++) {
+	//deformPlane.get
+	for (int i = 0; i < deformPlane.getNumIndices(); i++) {
 		// it is simpler than I imagined, its just cos over the whole thing.
 		//planeAngleX += planeAngleInc;
 		int ii = deformPlane.getIndex(i);
 		vert = deformPlane.getVertex(ii);
 		//vert.z += cos(planeAngleX) * 15 + 200;
 		// so we have i%PDX which is the x position
-		int help  = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 100)+1;
-		vert.z = i % help;
+		float help = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 10);
+		float help2 = ofMap(ofGetMouseY(), 0, ofGetHeight(), 0, 0.01);
+		
+		//vert.z = (ii % PDX)*help*10;
+
+		//vert.z += sin((ofGetElapsedTimeMillis()*help2)+(ii % PDX))*help;
+		vert.y -= sin((ofGetElapsedTimeMillis()*help2) + (ii % PDX))*help;
 		deformPlane.setVertex(ii, vert);
 	}
-
-	ofRotateX(ofGetFrameNum()*0.05);
-	material.begin();
+	ofScale(3);
+	
+	//ofRotateX(ofGetFrameNum()*0.2);
+	//material.begin();
+	ofPushStyle();
+	ofSetColor(255, 255, 255, ofMap(ofGetMouseX(), 0, ofGetWidth(), 255, 0));
 	ofFill();
 	plane.transformGL();
 	
 	deformPlane.draw();
+	//deformPlane.drawWireframe();
 	plane.restoreTransformGL();
-	material.end();
+	//material.end();
 
 	vidGrabber.getTexture().unbind();
 
 	ofDisableDepthTest();
 
 	ofFill();
+	ofPopStyle();
 
 	cam.end();
 }
