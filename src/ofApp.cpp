@@ -7,8 +7,8 @@ void ofApp::setup(){
 	ofDisableArbTex();
 	vidGrabber.setup(640, 480, true);
 
-	plane.set(ofGetWidth()*1.5,ofGetHeight()*1.5);
-	plane.setResolution(16, 9);
+	plane.set(ofGetWidth(),ofGetHeight());
+	plane.setResolution(20, 20);
 	plane.resizeToTexture(vidGrabber.getTexture(), .5);
 
 	ofSetSmoothLighting(true);
@@ -28,6 +28,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	/*
 	pointLight.setPosition((ofGetWidth()*.5) + cos(ofGetElapsedTimef()*.5)*(ofGetWidth()*.3), ofGetHeight() / 2, 500);
 	pointLight2.setPosition((ofGetWidth()*.5) + cos(ofGetElapsedTimef()*.15)*(ofGetWidth()*.3),
 		ofGetHeight()*.5 + sin(ofGetElapsedTimef()*.7)*(ofGetHeight()), -300);
@@ -37,6 +38,13 @@ void ofApp::update(){
 		sin(ofGetElapsedTimef()*1.5f) * ofGetWidth()*.5,
 		cos(ofGetElapsedTimef()*.2) * ofGetWidth()
 	);
+
+	*/
+
+
+	pointLight.setPosition(0,0, 500);
+	pointLight2.setPosition(0,0, -300);
+	pointLight3.setPosition(0, 0, 0);
 
 	vidGrabber.update();
 }
@@ -58,21 +66,28 @@ void ofApp::draw(){
 	deformPlane = plane.getMesh();
 	// x = columns, y = rows //
 	ofVec3f planeDims = plane.getResolution();
-	float planeAngleX = ofGetElapsedTimef()*3.6;
-	float planeAngleInc = 3.f / (float)planeDims.x;
+	float planeAngleX = ofGetElapsedTimef()*1.5;
+	float planeAngleInc = 10.f / (float)planeDims.x;
+	int PDX = planeDims.x;
 	ofVec3f vert;
 
 	for (size_t i = 0; i < deformPlane.getNumIndices(); i++) {
-		planeAngleX += planeAngleInc;
+		// it is simpler than I imagined, its just cos over the whole thing.
+		//planeAngleX += planeAngleInc;
 		int ii = deformPlane.getIndex(i);
 		vert = deformPlane.getVertex(ii);
-		vert.z += cos(planeAngleX) * 50;
+		//vert.z += cos(planeAngleX) * 15 + 200;
+		// so we have i%PDX which is the x position
+		int help  = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 100)+1;
+		vert.z = i % help;
 		deformPlane.setVertex(ii, vert);
 	}
 
+	ofRotateX(ofGetFrameNum()*0.05);
 	material.begin();
 	ofFill();
 	plane.transformGL();
+	
 	deformPlane.draw();
 	plane.restoreTransformGL();
 	material.end();
