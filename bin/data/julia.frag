@@ -16,6 +16,7 @@ uniform vec4 matSpecular;
 uniform float matShininess;
 
 // These are passed in from OF programmable renderer
+/*
 uniform mat4 modelViewMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
@@ -26,6 +27,9 @@ uniform sampler2D environmentMap;
 uniform float matReflectivity;
 uniform float matTransparency;
 uniform float matRefractiveIndex;
+*/
+
+/*
 
 void pointLight(in vec3 normal, in vec3 surfacePosition, inout vec3 diffuse, inout vec3 specular){
     float nDotVP;       // normal . light direction
@@ -106,7 +110,7 @@ vec4 calcRefraction(in vec3 normal, in vec3 surfacePosition) {
 	return texture(environmentMap, envLookupCoords);
 
 }
-
+*/
 void main (void) {
     vec3 ambient = vec3(0,0,0);
     vec3 diffuse = vec3(0,0,0);
@@ -116,11 +120,11 @@ void main (void) {
 	vec3 normal = normalize(v_viewSpaceNormal);
 
 	// Get the contribution of the light to the diffuse and specular light on the surface
-    pointLight(normal, v_viewSpacePosition, diffuse, specular);
+    //pointLight(normal, v_viewSpacePosition, diffuse, specular);
 
 	// Combine the lighting contributions to calculate the fragment color
     fragColor = matAmbient + vec4(diffuse,1.0) * matDiffuse + vec4(specular,1.0) * matSpecular;
-
+	/*
 	// Add the effect of reflections
 	if (matReflectivity > 0) {
 		vec4 reflectionColor = calcReflection(normal, v_viewSpacePosition);
@@ -132,4 +136,5 @@ void main (void) {
 		vec4 refractionColor = calcRefraction(normal, v_viewSpacePosition);
 		fragColor = mix(fragColor, refractionColor, matTransparency);
 	}
+	*/
 }
