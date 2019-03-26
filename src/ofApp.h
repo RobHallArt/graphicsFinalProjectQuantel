@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "animator.h"
+using namespace glm;
 
 class ofApp : public ofBaseApp{
 
@@ -22,6 +23,8 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+		int mode;
+		
 		ofVideoGrabber vidGrabber;
 		ofVideoGrabber vidGrabber2;
 
@@ -38,7 +41,15 @@ class ofApp : public ofBaseApp{
 		ofMaterial material;
 		animator anim1{ 2000,2,0,255,'g' };
 		animator anim2{ 2000,2,5,0,'g' };
-
-
 		
+
+		ofShader surfaceShader;
+		vec3 zoomLevel;
+
+		vec4 matAmbient;
+		vec4 matDiffuse;
+		vec4 matSpecular;
+		float matShininess;
+		vec4 lightPosition;
+		vec4 lightColor;
 };
