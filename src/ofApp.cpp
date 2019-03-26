@@ -6,9 +6,9 @@ void ofApp::setup(){
 	ofSetVerticalSync(true);
 	ofDisableArbTex();
 	vidGrabber2.listDevices();
-	vidGrabber.setDeviceID(0);
+	vidGrabber.setDeviceID(1);
 	vidGrabber.setup(640, 480, true);
-	vidGrabber2.setDeviceID(1);
+	vidGrabber2.setDeviceID(2);
 	vidGrabber2.setup(640, 480, true);
 	
 
