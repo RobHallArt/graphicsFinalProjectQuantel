@@ -59,6 +59,8 @@ void ofApp::update(){
 
 	vidGrabber.update();
 	vidGrabber2.update();
+	anim1.update();
+	anim2.update();
 }
 
 //--------------------------------------------------------------
@@ -104,7 +106,7 @@ void ofApp::draw(){
 		//vert.z = (ii % PDX)*help*10;
 
 		//vert.z += sin((ofGetElapsedTimeMillis()*help2)+(ii % PDX))*help;
-		vert.y -= sin((ofGetElapsedTimeMillis()*help2) + (ii % PDX))*help;
+		vert.y -= sin((ofGetElapsedTimeMillis()*0.01) + (ii % PDX))*anim2.value;
 		deformPlane.setVertex(ii, vert);
 	}
 	ofScale(3);
@@ -112,7 +114,8 @@ void ofApp::draw(){
 	//ofRotateX(ofGetFrameNum()*0.2);
 	//material.begin();
 	ofPushStyle();
-	ofSetColor(255, 255, 255, ofMap(ofGetMouseX(), 0, ofGetWidth(), 255, 0));
+	//ofSetColor(255, 255, 255, ofMap(ofGetMouseX(), 0, ofGetWidth(), 255, 0));
+	ofSetColor(255, 255, 255, anim1.value);
 	ofFill();
 	plane.transformGL();
 	
@@ -133,7 +136,8 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	anim1.trigger(key);
+	anim2.trigger(key);
 }
 
 //--------------------------------------------------------------

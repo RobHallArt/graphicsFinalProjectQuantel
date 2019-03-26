@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "animator.h"
 
 class ofApp : public ofBaseApp{
 
@@ -35,6 +36,9 @@ class ofApp : public ofBaseApp{
 		ofLight pointLight2;
 		ofLight pointLight3;
 		ofMaterial material;
+		animator anim1{ 2000,2,0,255,'g' };
+		animator anim2{ 2000,2,5,0,'g' };
+
 
 		
 };
