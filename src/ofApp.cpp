@@ -8,10 +8,10 @@ void ofApp::setup(){
 	ofSetVerticalSync(true);
 	ofDisableArbTex();
 	vidGrabber2.listDevices();
-	vidGrabber.setDeviceID(1);
+	vidGrabber.setDeviceID(0);
 	vidGrabber.setup(640, 480, true);
-	vidGrabber2.setDeviceID(2);
-	vidGrabber2.setup(640, 480, true);
+	vidGrabber2.setDeviceID(1);
+	vidGrabber2.setup(640, 480,true);
 
 	
 	
@@ -43,14 +43,11 @@ void ofApp::setup(){
 		material.setSpecularColor(ofColor(255, 255, 255, 255));
 	}
 	else if (mode == 1) {
-		surfaceShader.load("julia");
-		zoomLevel = vec3(0, 0, 4.0);
-		matAmbient = vec4(0.1f, 0.1f, 0.2f, 1.0f);
-		matDiffuse = vec4(0.2f, 0.5f, 0.7f, 1.0f);
-		matSpecular = vec4(3.5f, 4.0f, 5.0f, 1.0f);
-		matShininess = 500.0f;
-		lightPosition = vec4(10.0f, 10.0f, 20.0f, 1.0f);
-		lightColor = vec4(1.0f, 1.0f, 0.8f, 1.0f);
+		plane3.set(ofGetWidth(), ofGetHeight());
+		//plane3.setResolution(20, 20);
+		plane3.resizeToTexture(vidGrabber2.getTexture());
+		//plane3.setMode(OF_PRIMITIVE_TRIANGLES);
+		//plane3.setUseVbo(TRUE);
 	}
 
 }
@@ -152,16 +149,20 @@ void ofApp::draw(){
 		cam.end();
 	}
 	else if (mode == 1) {
+		
 		vidGrabber2.getTexture().bind();
 
 		surfaceShader.begin();
-		surfaceShader.setUniform4f("matAmbient", matAmbient);
-		surfaceShader.setUniform4f("matDiffuse", matDiffuse);
-		surfaceShader.setUniform4f("matSpecular", matSpecular);
-		surfaceShader.setUniform1f("matShininess", matShininess);
-		surfaceShader.setUniform4f("lightPosition", lightPosition);
-		surfaceShader.setUniform4f("lightColor", lightColor);
-		ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+		float mousePosition = ofMap(mouseX, 0, ofGetWidth(), 1.0, -1.0, true);
+		//surfaceShader.setUniform1f("mouseX", mousePosition);
+		//surfaceShader.setUniformTexture("texture1", vidGrabber2.getTexture());
+		//ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+		ofPushMatrix();
+		ofTranslate(ofGetWidth()*0.5, ofGetHeight()*0.5);
+		ofScale(1.5, -1.5, 1.5);
+
+		plane3.draw();
+		ofPopMatrix();
 		surfaceShader.end();
 
 		vidGrabber2.getTexture().unbind();

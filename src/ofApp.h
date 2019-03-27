@@ -31,6 +31,9 @@ class ofApp : public ofBaseApp{
 		ofPlanePrimitive plane;
 
 		ofPlanePrimitive plane2;
+
+		ofPlanePrimitive plane3;
+
 		ofVboMesh deformPlane;
 		ofCamera cam;
 
